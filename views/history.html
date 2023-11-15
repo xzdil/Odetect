@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>History</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<script src="/script.js"></script>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a style="color: #fafafa; margin-left: 10%" href="/">ODetect</a>
+    </div>
+    <ul class="navbar-links">
+        <li><a href="/">Main</a></li>
+        <li><a href="/detect">Detect</a></li>
+        <li><a href="/history">History</a></li>
+    </ul>
+</nav>
+<div class="container">
+
+</div>
+</body>
+<script>
+    const detections = get_detections()
+    detections.sort((a, b) => {
+        return new Date(a.time) - new Date(b.time);
+    });
+
+    let groupedDetections = {};
+
+    detections.forEach(obj => {
+        if (!groupedDetections[obj.class]) {
+            groupedDetections[obj.class] = [];
+        }
+        groupedDetections[obj.class].push(new Date(obj.time));
+    });
+
+    for (let obj in groupedDetections) {
+        console.log(`Объект "${obj}":`);
+        let times = groupedDetections[obj];
+        for (let i = 0; i < times.length - 1; i++) {
+            let startTime = times[i].toLocaleTimeString('en-US');
+            let endTime = times[i + 1].toLocaleTimeString('en-US');
+            console.log(`   ${startTime}-${endTime}`);
+        }
+    }
+
+</script>
+</html>
